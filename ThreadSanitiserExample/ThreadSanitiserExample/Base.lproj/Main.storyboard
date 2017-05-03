@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -66,16 +67,29 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gu-zN-LlB">
+                                <rect key="frame" x="218" y="598" width="97" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="geK-UT-2ky"/>
+                                    <constraint firstAttribute="width" constant="97" id="poQ-2E-o2t"/>
+                                </constraints>
+                                <state key="normal" title="Reset balance"/>
+                                <connections>
+                                    <action selector="didPressResetBalance:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VqD-HZ-I6F"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="FG9-EM-UYQ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8rF-SC-XYx"/>
                             <constraint firstItem="ClR-JR-hEN" firstAttribute="top" secondItem="jqs-M3-R6z" secondAttribute="bottom" constant="19" id="Adf-Cb-TMV"/>
                             <constraint firstItem="1hJ-0v-jC8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Hsq-cY-MSz"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="1gu-zN-LlB" secondAttribute="bottom" constant="39" id="Pqj-GF-afl"/>
                             <constraint firstItem="1hJ-0v-jC8" firstAttribute="top" secondItem="FG9-EM-UYQ" secondAttribute="bottom" constant="25" id="Yek-8y-FGJ"/>
                             <constraint firstItem="ClR-JR-hEN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Yj7-EC-Ehb"/>
                             <constraint firstItem="jqs-M3-R6z" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aI9-gV-hp4"/>
                             <constraint firstItem="FG9-EM-UYQ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="272" id="q5B-1S-3nm"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1gu-zN-LlB" secondAttribute="trailing" constant="44" id="rz0-uR-dBd"/>
                             <constraint firstItem="jqs-M3-R6z" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="y80-1n-1Bz"/>
                         </constraints>
                     </view>

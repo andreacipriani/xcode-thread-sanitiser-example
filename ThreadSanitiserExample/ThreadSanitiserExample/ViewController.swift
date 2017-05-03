@@ -10,21 +10,33 @@ class ViewController: UIViewController {
     }
 
     @IBAction func didPressWithdraw50(_ sender: Any) {
-        DispatchQueue.global().async {
-            self.bankAccount.withdraw50Euro() { result in
-                self.handle(result: result)
-            }
+        self.bankAccount.withdraw50Euro() { result in
+            self.handle(result: result)
         }
     }
     
     @IBAction func didPressCrazyWithdraws(_ sender: Any) {
         
+        DispatchQueue.global(qos: .background).async {
+        
+            self.bankAccount.withdraw50Euro() { _ in }
+            self.bankAccount.withdraw50Euro() { _ in }
+            
+            DispatchQueue.main.async {
+                self.showBalance()
+            }
+        }
+    }
+    
+    @IBAction func didPressResetBalance(_ sender: Any) {
+        bankAccount.resetBalance(to: 80)
+        showBalance()
     }
     
     private func handle(result: Result<Int, BankError>) {
         result.analysis(ifSuccess: { balance in
             DispatchQueue.main.async {
-                self.balanceLabel.text = String(balance)
+                self.showBalance()
             }
         }, ifFailure: { error in
             showErrorAlert()
@@ -36,6 +48,10 @@ class ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    
+    private func showBalance() {
+        balanceLabel.text = String(bankAccount.balance)
+    }
 }
 
 class BankAccount {
@@ -46,19 +62,32 @@ class BankAccount {
         balance = initialBalance
     }
     
+    func resetBalance(to balance: Int){
+        self.balance = balance
+    }
+    
     func withdraw50Euro(completion: @escaping (Result<Int, BankError>) -> Void) {
         if (balance < 50) {
+            printWithThread("Balance is lower than 50, you can't withdraw")
             completion(.failure(.noMoney))
             return
         }
-        balance -= 50
+        printWithThread("Balance is higher than 50, let's take the money!")
         windowsXPLatency()
+        balance -= 50
+        printWithThread("Balance updated to \(balance)")
         completion(.success(balance))
     }
     
     func windowsXPLatency() {
-        sleep(arc4random_uniform(UInt32(2)))
+        sleep(3)
     }
+}
+
+func printWithThread(_ text: String){
+    let threadDescription = Thread.current.description
+    //let threadNum = threadDescription.substring(from: threadNumIndex)
+    print("\(text) - on thread \(threadDescription)")
 }
 
 enum BankError: Error {
