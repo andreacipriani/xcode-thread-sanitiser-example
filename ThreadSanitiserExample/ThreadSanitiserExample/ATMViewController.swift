@@ -1,9 +1,9 @@
 import UIKit
 
-class ViewController: UIViewController {
+class ATMViewController: UIViewController {
 
     @IBOutlet weak var balanceLabel: UILabel!
-    let bankAccount = BankAccount(initialBalance: 80)
+    let bankAccount = BankAccount()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,15 +15,15 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func didPressCrazyWithdraws(_ sender: Any) {
-        
+    @IBAction func didPressWithdraw50OnBackground(_ sender: Any) {
+
         DispatchQueue.global(qos: .background).async {
-        
-            self.bankAccount.withdraw50Euro() { _ in }
-            self.bankAccount.withdraw50Euro() { _ in }
-            
-            DispatchQueue.main.async {
-                self.showBalance()
+
+            self.bankAccount.withdraw50Euro() { result in
+                self.handle(result: result)
+                DispatchQueue.main.async {
+                    self.showBalance()
+                }
             }
         }
     }
@@ -56,10 +56,10 @@ class ViewController: UIViewController {
 
 class BankAccount {
     
-    internal private(set) var balance: Int
+    internal private(set) var balance: Int //sharedResource that should be thread-safe
 
-    init(initialBalance: Int) {
-        balance = initialBalance
+    init() {
+        balance = 80
     }
     
     func resetBalance(to balance: Int){
@@ -67,6 +67,7 @@ class BankAccount {
     }
     
     func withdraw50Euro(completion: @escaping (Result<Int, BankError>) -> Void) {
+        //Critical section
         if (balance < 50) {
             printWithThread("Balance is lower than 50, you can't withdraw")
             completion(.failure(.noMoney))
@@ -85,9 +86,7 @@ class BankAccount {
 }
 
 func printWithThread(_ text: String){
-    let threadDescription = Thread.current.description
-    //let threadNum = threadDescription.substring(from: threadNumIndex)
-    print("\(text) - on thread \(threadDescription)")
+    print("\(text) - on thread \(Thread.current.description)")
 }
 
 enum BankError: Error {
