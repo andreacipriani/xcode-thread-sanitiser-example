@@ -1,3 +1,4 @@
 # xcode-thread-sanitizer-example
 
-An Xcode project where you can simulate a synchronization problem and use the XCode thread sanitizer to identify it
+An Xcode project to easily simulate a synchronization issue. 
+You can use the XCode thread sanitizer to identify it.
